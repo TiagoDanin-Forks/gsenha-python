@@ -11,4 +11,4 @@ clean:
 	-@rm -rf $(ROOT_PATH)/build
 
 release: clean
-	@python setup.py sdist upload -r pypi
+	@python setup.py register sdist upload -r pypi
