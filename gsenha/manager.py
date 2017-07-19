@@ -23,7 +23,7 @@ class PasswordManager(object):
         self._get_token()
 
     def _load_key(self, gsenha_key):
-        if os.path.exists(gsenha_key):
+        if gsenha_key and os.path.exists(gsenha_key):
             with gsenha_key as opened_key:
                 gsenha_key = opened_key.read()
         try:
