@@ -24,7 +24,7 @@ class PasswordManager(object):
 
     def _load_key(self, gsenha_key):
         if gsenha_key and os.path.exists(gsenha_key):
-            with gsenha_key as opened_key:
+            with open(gsenha_key) as opened_key:
                 gsenha_key = opened_key.read()
         try:
             return load_pem_private_key(gsenha_key, password=None, backend=default_backend())
