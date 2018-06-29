@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="gsenha",
-    version="0.0.4",
+    version="0.0.5",
     description="client for gsenha api",
     author="Big Data",
     author_email="bigdata@corp.globo.com",

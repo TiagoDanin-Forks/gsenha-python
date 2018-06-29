@@ -1,1 +1,1 @@
-from manager import PasswordManager
+from .manager import PasswordManager

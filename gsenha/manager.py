@@ -1,4 +1,5 @@
 import os
+import base64
 import json
 import requests
 from cryptography.hazmat.backends import default_backend
@@ -20,14 +21,16 @@ class PasswordManager(object):
             "Content-Type": "application/json"
         }
         self._gsenha_endpoint = endpoint
+
         self._get_token()
+
 
     def _load_key(self, gsenha_key):
         if gsenha_key and os.path.exists(gsenha_key):
             with open(gsenha_key) as opened_key:
                 gsenha_key = opened_key.read()
         try:
-            return load_pem_private_key(gsenha_key, password=None, backend=default_backend())
+            return load_pem_private_key(gsenha_key.encode('ascii'), password=None, backend=default_backend())
         except ValueError:
             raise Exception("key load error")
 
@@ -60,7 +63,7 @@ class PasswordManager(object):
             return password_json.get("password")
 
     def _decrypt(self, value):
-        raw_cipher_data = value.decode('base64','strict')
+        raw_cipher_data = base64.b64decode(value)
         return self._rsa_verifier.decrypt(raw_cipher_data, padding.PKCS1v15())
 
     def get_passwords(self, folder, *names):
