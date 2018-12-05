@@ -9,7 +9,7 @@ Client for [gsenha-api](https://github.com/globocom/gsenha-api)
 ## Usage
 
     from gsenha import PasswordManager
-    pm = PasswordManager(GSENHA_ENDPOINT, GSENHA_USER, GSENHA_PASS, GSENHA_KEY|GSENHA_KEY_PATH)
+    pm = PasswordManager(GSENHA_ENDPOINT, GSENHA_USER, GSENHA_PASS, GSENHA_KEY|GSENHA_KEY_PATH, verify='path_to_your_private_cert')
     pm.get_passwords(folder, name1, name2, name*)
 
 * GSENHA_ENDPOINT: Endpoint for [gsenha-api](https://github.com/globocom/gsenha-api)

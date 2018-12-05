@@ -12,10 +12,11 @@ class PasswordManager(object):
 
     def __init__(self, endpoint=os.environ.get("GSENHA_ENDPOINT"),
                 user=os.environ.get("GSENHA_USER"), password=os.environ.get("GSENHA_PASS"),
-                key=os.environ.get("GSENHA_KEY", os.environ.get("GSENHA_KEY_PATH"))):
+                key=os.environ.get("GSENHA_KEY", os.environ.get("GSENHA_KEY_PATH")), verify=None):
         self._token = None
         self._user = user
         self._pass = password
+        self._verify = verify
         self._rsa_verifier = self._load_key(key)
         self._headers = {
             "Content-Type": "application/json"
@@ -41,7 +42,7 @@ class PasswordManager(object):
             data=json.dumps({
                 "username": self._user,
                 "password": self._pass
-            }))
+            }), verify=self._verify)
 
         if token_response.ok:
             token_json = token_response.json()
@@ -57,7 +58,7 @@ class PasswordManager(object):
             data=json.dumps({
                 "folder": folder,
                 "name": name
-            }))
+            }), verify=self._verify)
         password_json = response.json()
         if password_json.get("status") == "success":
             return password_json.get("password")
