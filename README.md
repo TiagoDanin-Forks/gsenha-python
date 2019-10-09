@@ -1,4 +1,5 @@
 # GSenha Client Python
+[![Build Status](https://travis-ci.com/globocom/gsenha-python.svg?branch=master)](https://travis-ci.com/globocom/gsenha-python)
 
 Client for [gsenha-api](https://github.com/globocom/gsenha-api)
 
@@ -25,4 +26,8 @@ You can use these *enviroment variables* and don't pass all of them when initial
     from gsenha import PasswordManager
     pm = PasswordManager()
     pm.get_passwords(folder, name1, name2, name*)
+
+## Contribute
+
+For development and contributing, please follow [Contributing Guide](https://github.com/globocom/gsenha-python/blob/master/CONTRIBUTING.md) and ALWAYS respect the [Code of Conduct](https://github.com/globocom/gsenha-python/blob/master/CODE_OF_CONDUCT.md)
     
