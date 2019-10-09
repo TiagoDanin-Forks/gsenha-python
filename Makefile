@@ -1,9 +1,12 @@
-.PHONY: install clean release
+.PHONY: install test clean release
 
 ROOT_PATH=$(shell pwd)
 
 install:
 	@pip install -e .
+
+test:
+	@echo No Tests
 
 clean:
 	-@rm -rf $(ROOT_PATH)/*.egg-info
