@@ -14,4 +14,5 @@ clean:
 	-@rm -rf $(ROOT_PATH)/build
 
 release: clean
-	@python setup.py register sdist upload -r pypi
+        @python setup.py sdist
+        @twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
