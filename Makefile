@@ -4,6 +4,7 @@ ROOT_PATH=$(shell pwd)
 
 install:
 	@pip install -e .
+	@pip install -r requirements_dev.txt
 
 test:
 	@echo No Tests
@@ -14,5 +15,5 @@ clean:
 	-@rm -rf $(ROOT_PATH)/build
 
 release: clean
-        @python setup.py sdist
-        @twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+	@python setup.py sdist
+	@twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
