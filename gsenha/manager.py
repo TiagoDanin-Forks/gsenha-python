@@ -65,7 +65,7 @@ class PasswordManager(object):
 
     def _decrypt(self, value):
         raw_cipher_data = base64.b64decode(value)
-        return self._rsa_verifier.decrypt(raw_cipher_data, padding.PKCS1v15())
+        return str(self._rsa_verifier.decrypt(raw_cipher_data, padding.PKCS1v15()).decode('utf-8'))
 
     def get_passwords(self, folder, *names):
         return_passwords = dict()
