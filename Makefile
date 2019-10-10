@@ -14,6 +14,7 @@ endif
 
 test:
 	@pipenv run flake8
+	@pipenv run pytest --cov
 
 clean:
 	-@rm -rf $(ROOT_PATH)/*.egg-info
