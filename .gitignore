@@ -102,3 +102,6 @@ ENV/
 
 # code
 .vscode
+
+# Vim
+*.swp
