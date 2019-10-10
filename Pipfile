@@ -6,9 +6,9 @@ verify_ssl = true
 [dev-packages]
 twine = ">=1.13.0"
 gsenha = {editable = true,path = "."}
+flake8 = "*"
 
 [packages]
 
 [requires]
 python_version = "3.7"
-

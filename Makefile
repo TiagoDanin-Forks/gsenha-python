@@ -13,7 +13,7 @@ endif
 	@pipenv install --dev
 
 test:
-	@echo No Tests
+	@pipenv run flake8
 
 clean:
 	-@rm -rf $(ROOT_PATH)/*.egg-info
