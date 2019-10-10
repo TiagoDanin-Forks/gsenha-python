@@ -12,8 +12,12 @@ ifndef PIPENV
 endif
 	@pipenv install --dev
 
-test:
+test: unit
+
+qa:
 	@pipenv run flake8
+
+unit:
 	@pipenv run pytest --cov
 
 clean:
