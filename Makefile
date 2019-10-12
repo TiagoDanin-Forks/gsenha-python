@@ -1,13 +1,24 @@
+PIPENV := $(shell command -v pipenv 2> /dev/null)
+
 .PHONY: install test clean release
 
 ROOT_PATH=$(shell pwd)
 
 install:
-	@pip install -e .
-	@pip install -r requirements_dev.txt
+ifndef PIPENV
+	@echo "You must have pipenv installed (https://pipenv.kennethreitz.org/en/latest/)."
+	@echo
+	@exit 1
+endif
+	@pipenv install --dev
 
-test:
-	@echo No Tests
+test: unit
+
+qa:
+	@pipenv run flake8
+
+unit:
+	@pipenv run pytest --cov
 
 clean:
 	-@rm -rf $(ROOT_PATH)/*.egg-info
@@ -15,5 +26,6 @@ clean:
 	-@rm -rf $(ROOT_PATH)/build
 
 release: clean
-	@python setup.py sdist
-	@twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+	@pipenv run python setup.py sdist
+	@pipenv run twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+

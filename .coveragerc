@@ -1,0 +1,9 @@
+[run]
+branch = True
+include =
+    gsenha/*
+
+[report]
+fail_under = 43
+show_missing = True
+
