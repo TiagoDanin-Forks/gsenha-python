@@ -1,10 +1,99 @@
-import pytest
+import base64
+from unittest import TestCase
+try:
+    from unittest.mock import patch, Mock
+except ImportError:
+    from mock import patch, Mock
 
+from cryptography.hazmat.primitives.asymmetric import padding
 from gsenha import PasswordManager
 
 
-def test_key_load_error():
-    with pytest.raises(Exception) as excinfo:
-        PasswordManager(key='')
-    assert "key load error" in str(excinfo.value)
+class PasswordManagerTest(TestCase):
 
+    def test_invalid_key_raises_exception(self):
+        with self.assertRaises(Exception) as context_manager:
+            PasswordManager(key='')
+
+        self.assertEqual(str(context_manager.exception), 'key load error')
+
+    @patch('requests.post')
+    def test_response_to_get_token_is_not_ok(self, mock_post):
+        mock_response = Mock()
+        mock_response.ok = False
+        mock_post.return_value = mock_response
+
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        self.assertIsNone(pm._token)
+
+    @patch('requests.post')
+    def test_response_to_get_token_is_ok_but_there_is_no_token(self, mock_post):
+        mock_response = Mock()
+        mock_response.ok = True
+        mock_response.json.return_value = {}
+        mock_post.return_value = mock_response
+
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        self.assertIsNone(pm._token)
+
+    @patch('requests.post')
+    def test_response_to_get_token_is_ok(self, mock_post):
+        mock_response = Mock()
+        mock_response.ok = True
+        mock_response.json.return_value = {'token': 'my-fake-token'}
+        mock_post.return_value = mock_response
+
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        self.assertEqual(pm._token, 'my-fake-token')
+
+    @patch.object(PasswordManager, '_get_token', new=lambda x: 'my-fake-token')
+    def test_try_to_get_password_but_password_name_is_not_passed(self):
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        passwords = pm.get_passwords('folder-name')
+
+        self.assertDictEqual(passwords, {})
+
+    @patch.object(PasswordManager, '_get_token', new=lambda x: 'my-fake-token')
+    @patch('requests.post')
+    def test_request_to_get_password_returns_error(self, mock_post):
+        mock_response = Mock()
+        mock_response.json.return_value = {'status': 'error', 'password': ''}
+        mock_post.return_value = mock_response
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        passwords = pm.get_passwords('folder-name', 'password-name')
+
+        self.assertDictEqual(passwords, {})
+
+    @patch.object(PasswordManager, '_get_token', new=lambda x: 'my-fake-token')
+    @patch('requests.post')
+    def test_gets_passwords_correctly(self, mock_post):
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        def encrypt_text(text):
+            public_key = pm._rsa_verifier.public_key()
+            encrypted_key = public_key.encrypt(text.encode('ascii'), padding.PKCS1v15())
+            return base64.b64encode(bytes(encrypted_key))
+
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'status': 'success',
+            'password': {
+                'url': encrypt_text('a'),
+                'login': encrypt_text('b'),
+                'passwd': encrypt_text('c'),
+                'description': encrypt_text('d'),
+            }
+        }
+        mock_post.return_value = mock_response
+
+        passwords = pm.get_passwords('folder-name', 'password-name')
+
+        self.assertEqual(passwords['password-name']['url'], 'a')
+        self.assertEqual(passwords['password-name']['login'], 'b')
+        self.assertEqual(passwords['password-name']['password'], 'c')
+        self.assertEqual(passwords['password-name']['description'], 'd')
