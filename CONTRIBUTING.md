@@ -2,7 +2,6 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-
 When contributing to this repository, please first discuss the change you wish to make via issue or any other method with the owners of this repository before making a change. 
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
@@ -23,7 +22,7 @@ make test
 
 ### Publish to Pypi
 
-```
+```bash
 make release
 ```
 
@@ -56,12 +55,12 @@ chances of your issue being dealt with quickly:
   causing the problem (line of code or commit).  If you're requesting a feature, describe how the feature might work to resolve the user story.
 
 ## Submitting a Pull Request
-Before you submit your pull request consider the following guidelines:
+> Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/globocom/gsenha-python/pulls) for an open or closed Pull Request that relates to your submission. You don't want to duplicate effort.
 * Make your changes in a new git branch
 
-     ```shell
+     ```git
      git checkout -b my-fix-branch master
      ```
 
@@ -71,7 +70,7 @@ Before you submit your pull request consider the following guidelines:
   and ensure that all tests pass.
 * Commit your changes using a descriptive commit message
 
-     ```shell
+     ```git
      git commit -a
      ```
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
@@ -84,7 +83,7 @@ Before you submit your pull request consider the following guidelines:
 
 * Push your branch to GitHub:
 
-    ```shell
+    ```git
     git push origin my-fix-branch
     ```
 
@@ -94,7 +93,7 @@ Before you submit your pull request consider the following guidelines:
   * Re-run the test suite to ensure tests are still passing.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
-    ```shell
+    ```git
     git rebase master -i
     git push -f
     ```
@@ -108,27 +107,27 @@ from the main (upstream) repository:
 
 * Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
-    ```shell
+    ```git
     git push origin --delete my-fix-branch
     ```
 
 * Check out the master branch:
 
-    ```shell
+    ```git
     git checkout master -f
     ```
 
 * Delete the local branch:
 
-    ```shell
+    ```git
     git branch -D my-fix-branch
     ```
 
 ## Reviewing Pull Requests
 
-Except for critical, urgent or very small fixes, we try to leave pull requests open for most of the day or overnight if something comes in late in the day, so that multiple people have the chance to review/comment.  Anyone who reviews a pull request should leave a note to let others know that someone has looked at it.  For larger commits, we like to have a +1 from someone else on the core team and/or from other contributor(s).  Please note if you reviewed the code or tested locally -- a +1 by itself will typically be interpreted as your thinking its a good idea, but not having reviewed in detail.
+* Except for critical, urgent or very small fixes, we try to leave pull requests open for most of the day or overnight if something comes in late in the day, so that multiple people have the chance to review/comment.  Anyone who reviews a pull request should leave a note to let others know that someone has looked at it.  For larger commits, we like to have a +1 from someone else on the core team and/or from other contributor(s).  Please note if you reviewed the code or tested locally -- a +1 by itself will typically be interpreted as your thinking its a good idea, but not having reviewed in detail.
 
-If the PR contains a database migration, please tag it with the `help wanted`. A
+* If the PR contains a database migration, please tag it with the `help wanted`. A
 contributor for the project will work with you to get this tested in a staging
 environment along with getting the migration running on the database. These PRs
 will also be code reviewed at this time as well.
