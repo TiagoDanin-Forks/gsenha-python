@@ -16,7 +16,7 @@ class PasswordManagerTest(TestCase):
         with self.assertRaises(Exception) as context_manager:
             PasswordManager(key='')
 
-        self.assertEqual(str(context_manager.exception), 'Error on loading the key')
+        self.assertEqual(str(context_manager.exception), 'Error loading private key')
     
     def test_invalid_key_path_raises_exception(self):
         with self.assertRaises(ValueError) as context_manager:

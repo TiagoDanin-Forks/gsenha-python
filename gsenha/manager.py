@@ -37,7 +37,7 @@ class PasswordManager(object):
                 backend=default_backend()
             )
         except ValueError:
-            raise Exception('Error on loading the key')
+            raise Exception('Error loading private key')
 
     def __load_key_from_file(self, key_path):
         if path.exists(key_path):
