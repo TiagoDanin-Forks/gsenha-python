@@ -64,13 +64,12 @@ class PasswordManager(object):
                 return token_json.get('token')
 
     def _get_password(self, folder, name):
-        headers = {
-            'Authorization': 'Bearer {}'.format(self._token)
-        }
+        headers = self._headers.copy()
+        headers['Authorization'] = 'Bearer {}'.format(self._token)
 
         response = requests.post(
             '{}/search/password'.format(self._gsenha_endpoint),
-            headers={**self._headers, **headers},
+            headers=headers,
             data=json.dumps({
                     'folder': folder,
                     'name': name
