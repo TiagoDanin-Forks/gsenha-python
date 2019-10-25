@@ -1,4 +1,5 @@
 import base64
+
 from unittest import TestCase
 try:
     from unittest.mock import patch, Mock
@@ -15,7 +16,13 @@ class PasswordManagerTest(TestCase):
         with self.assertRaises(Exception) as context_manager:
             PasswordManager(key='')
 
-        self.assertEqual(str(context_manager.exception), 'key load error')
+        self.assertEqual(str(context_manager.exception), 'Error loading private key')
+    
+    def test_invalid_key_path_raises_exception(self):
+        with self.assertRaises(ValueError) as context_manager:
+            PasswordManager(key='/this/path/does/not/exists')
+
+        self.assertEqual(str(context_manager.exception), 'Key File does not exist')
 
     @patch('requests.post')
     def test_response_to_get_token_is_not_ok(self, mock_post):
