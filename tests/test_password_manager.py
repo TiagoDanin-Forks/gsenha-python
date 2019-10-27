@@ -1,5 +1,4 @@
 import base64
-
 from unittest import TestCase
 try:
     from unittest.mock import patch, Mock
@@ -7,7 +6,9 @@ except ImportError:
     from mock import patch, Mock
 
 from cryptography.hazmat.primitives.asymmetric import padding
+
 from gsenha import PasswordManager
+from gsenha.exceptions import TokenError
 
 
 class PasswordManagerTest(TestCase):
@@ -30,9 +31,10 @@ class PasswordManagerTest(TestCase):
         mock_response.ok = False
         mock_post.return_value = mock_response
 
-        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+        with self.assertRaises(TokenError) as context_manager:
+            PasswordManager(key='tests/fixtures/privkey.pem')
 
-        self.assertIsNone(pm._token)
+        self.assertEqual(str(context_manager.exception), 'Could not get token')
 
     @patch('requests.post')
     def test_response_to_get_token_is_ok_but_there_is_no_token(self, mock_post):
