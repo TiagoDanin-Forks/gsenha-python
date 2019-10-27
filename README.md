@@ -34,4 +34,4 @@ pm.get_passwords(folder, name1, name2, name*)
 ## Contribute
 
 For development and contributing, please follow [Contributing Guide](https://github.com/globocom/gsenha-python/blob/master/CONTRIBUTING.md) and **ALWAYS** respect the [Code of Conduct](https://github.com/globocom/gsenha-python/blob/master/CODE_OF_CONDUCT.md)
-    
+

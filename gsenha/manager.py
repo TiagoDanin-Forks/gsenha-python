@@ -6,7 +6,6 @@ import requests
 from os import environ, path
 
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.hazmat.primitives.asymmetric import padding
 
@@ -14,8 +13,8 @@ from cryptography.hazmat.primitives.asymmetric import padding
 class PasswordManager(object):
 
     def __init__(self, endpoint=environ.get('GSENHA_ENDPOINT'),
-                user=environ.get('GSENHA_USER'), password=environ.get('GSENHA_PASS'),
-                key=environ.get('GSENHA_KEY', environ.get('GSENHA_KEY_PATH')), verify=None):
+                 user=environ.get('GSENHA_USER'), password=environ.get('GSENHA_PASS'),
+                 key=environ.get('GSENHA_KEY', environ.get('GSENHA_KEY_PATH')), verify=None):
         self._user = user
         self._password = password
         self._verify = verify
@@ -29,7 +28,7 @@ class PasswordManager(object):
     def _load_key(self, gsenha_key):
         if gsenha_key:
             gsenha_key = self.__load_key_from_file(gsenha_key)
-        
+
         try:
             return load_pem_private_key(
                 data=gsenha_key.encode('ascii'),
@@ -51,10 +50,9 @@ class PasswordManager(object):
             '{}/login'.format(self._gsenha_endpoint),
             headers=self._headers,
             data=json.dumps({
-                    'username': self._user,
-                    'password': self._password,
-                }
-            ),
+                'username': self._user,
+                'password': self._password,
+            }),
             verify=self._verify
         )
 
@@ -71,13 +69,12 @@ class PasswordManager(object):
             '{}/search/password'.format(self._gsenha_endpoint),
             headers=headers,
             data=json.dumps({
-                    'folder': folder,
-                    'name': name
-                }
-            ),
+                'folder': folder,
+                'name': name
+            }),
             verify=self._verify
         )
-        
+
         password_json = response.json()
         if password_json.get('status') == 'success':
             return password_json.get('password')
