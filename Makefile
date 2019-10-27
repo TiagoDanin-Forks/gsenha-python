@@ -18,7 +18,7 @@ qa:
 	@pipenv run flake8
 
 unit:
-	@pipenv run pytest --cov
+	@pipenv run pytest -s --cov
 
 clean:
 	-@rm -rf $(ROOT_PATH)/*.egg-info
@@ -28,4 +28,3 @@ clean:
 release: clean
 	@pipenv run python setup.py sdist
 	@pipenv run twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
-
