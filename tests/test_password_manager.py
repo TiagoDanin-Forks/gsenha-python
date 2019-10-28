@@ -1,5 +1,4 @@
 import base64
-
 from unittest import TestCase
 try:
     from unittest.mock import patch, Mock
@@ -7,7 +6,9 @@ except ImportError:
     from mock import patch, Mock
 
 from cryptography.hazmat.primitives.asymmetric import padding
+
 from gsenha import PasswordManager
+from gsenha.exceptions import TokenError
 
 
 class PasswordManagerTest(TestCase):
@@ -17,7 +18,7 @@ class PasswordManagerTest(TestCase):
             PasswordManager(key='')
 
         self.assertEqual(str(context_manager.exception), 'Error loading private key')
-    
+
     def test_invalid_key_path_raises_exception(self):
         with self.assertRaises(ValueError) as context_manager:
             PasswordManager(key='/this/path/does/not/exists')
@@ -28,11 +29,28 @@ class PasswordManagerTest(TestCase):
     def test_response_to_get_token_is_not_ok(self, mock_post):
         mock_response = Mock()
         mock_response.ok = False
+        mock_response.status_code = 500
         mock_post.return_value = mock_response
 
-        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+        with self.assertRaises(TokenError) as context_manager:
+            PasswordManager(key='tests/fixtures/privkey.pem')
 
-        self.assertIsNone(pm._token)
+        self.assertEqual(
+            str(context_manager.exception),
+            'Response status code to get token is not ok. Status code was: 500'
+        )
+
+    @patch('requests.post')
+    def test_response_to_get_token_returns_error(self, mock_post):
+        mock_post.side_effect = Exception('Boom!')
+
+        with self.assertRaises(Exception) as context_manager:
+            PasswordManager(key='tests/fixtures/privkey.pem')
+
+        self.assertEqual(
+            str(context_manager.exception),
+            'There was error requesting token. Error was: Boom!'
+        )
 
     @patch('requests.post')
     def test_response_to_get_token_is_ok_but_there_is_no_token(self, mock_post):
