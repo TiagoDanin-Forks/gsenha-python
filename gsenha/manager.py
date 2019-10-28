@@ -48,22 +48,29 @@ class PasswordManager(object):
             raise ValueError('Key File does not exist')
 
     def _get_token(self):
-        token_response = requests.post(
-            '{}/login'.format(self._gsenha_endpoint),
-            headers=self._headers,
-            data=json.dumps({
-                'username': self._user,
-                'password': self._password,
-            }),
-            verify=self._verify
-        )
-
-        if token_response.ok:
-            token_json = token_response.json()
-            if token_json:
-                return token_json.get('token')
+        try:
+            token_response = requests.post(
+                '{}/login'.format(self._gsenha_endpoint),
+                headers=self._headers,
+                data=json.dumps({
+                    'username': self._user,
+                    'password': self._password,
+                }),
+                verify=self._verify
+            )
+        except Exception as e:
+            raise TokenError('There was error requesting token. Error was: {}'.format(str(e)))
         else:
-            raise TokenError('Could not get token')
+            if token_response.ok:
+                token_json = token_response.json()
+                if token_json:
+                    return token_json.get('token')
+            else:
+                raise TokenError(
+                    'Response status code to get token is not ok. Status code was: {}'.format(
+                        token_response.status_code
+                    )
+                )
 
     def _get_password(self, folder, name):
         headers = self._headers.copy()

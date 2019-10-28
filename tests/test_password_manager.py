@@ -29,12 +29,28 @@ class PasswordManagerTest(TestCase):
     def test_response_to_get_token_is_not_ok(self, mock_post):
         mock_response = Mock()
         mock_response.ok = False
+        mock_response.status_code = 500
         mock_post.return_value = mock_response
 
         with self.assertRaises(TokenError) as context_manager:
             PasswordManager(key='tests/fixtures/privkey.pem')
 
-        self.assertEqual(str(context_manager.exception), 'Could not get token')
+        self.assertEqual(
+            str(context_manager.exception),
+            'Response status code to get token is not ok. Status code was: 500'
+        )
+
+    @patch('requests.post')
+    def test_response_to_get_token_returns_error(self, mock_post):
+        mock_post.side_effect = Exception('Boom!')
+
+        with self.assertRaises(Exception) as context_manager:
+            PasswordManager(key='tests/fixtures/privkey.pem')
+
+        self.assertEqual(
+            str(context_manager.exception),
+            'There was error requesting token. Error was: Boom!'
+        )
 
     @patch('requests.post')
     def test_response_to_get_token_is_ok_but_there_is_no_token(self, mock_post):
