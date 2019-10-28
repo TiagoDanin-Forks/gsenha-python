@@ -1,5 +1,6 @@
-# GSenha Client Python
 [![Build Status](https://travis-ci.com/globocom/gsenha-python.svg?branch=master)](https://travis-ci.com/globocom/gsenha-python)
+
+# GSenha Client Python
 
 Client for [gsenha-api](https://github.com/globocom/gsenha-api)
 
@@ -15,11 +16,11 @@ pm = PasswordManager(GSENHA_ENDPOINT, GSENHA_USER, GSENHA_PASS, GSENHA_KEY|GSENH
 pm.get_passwords(folder, name1, name2, name*)
 ```
 
-* GSENHA_ENDPOINT: Endpoint for [gsenha-api](https://github.com/globocom/gsenha-api)
-* GSENHA_USER: User for [gsenha-api](https://github.com/globocom/gsenha-api)
-* GSENHA_PASS: Password for [gsenha-api](https://github.com/globocom/gsenha-api)
-* GSENHA_KEY: User's private key for [gsenha-api](https://github.com/globocom/gsenha-api)
-* GSENHA\_KEY\_PATH: User's private key path for [gsenha-api](https://github.com/globocom/gsenha-api)
+* `GSENHA_ENDPOINT`: Endpoint for [gsenha-api](https://github.com/globocom/gsenha-api)
+* `GSENHA_USER`: User for [gsenha-api](https://github.com/globocom/gsenha-api)
+* `GSENHA_PASS`: Password for [gsenha-api](https://github.com/globocom/gsenha-api)
+* `GSENHA_KEY`: User's private key for [gsenha-api](https://github.com/globocom/gsenha-api)
+* `GSENHA\_KEY\_PATH`: User's private key path for [gsenha-api](https://github.com/globocom/gsenha-api)
 
 GSenha should use raw private key as string or load file from filesystem.
 
@@ -32,6 +33,6 @@ pm.get_passwords(folder, name1, name2, name*)
 
 ## Contribute
 
-For development and contributing, please follow [Contributing Guide](https://github.com/globocom/gsenha-python/blob/master/CONTRIBUTING.md) and ALWAYS respect the [Code of Conduct](https://github.com/globocom/gsenha-python/blob/master/CODE_OF_CONDUCT.md)
+For development and contributing, please follow [Contributing Guide](https://github.com/globocom/gsenha-python/blob/master/CONTRIBUTING.md) and **ALWAYS** respect the [Code of Conduct](https://github.com/globocom/gsenha-python/blob/master/CODE_OF_CONDUCT.md)
 
 *This article can also be read in [Brazilian Portuguese](README-pt-BR.md).*
