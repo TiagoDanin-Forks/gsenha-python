@@ -1,10 +1,7 @@
 import base64
-import json
-
-import requests
-
 from os import environ, path
 
+import requests
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -52,10 +49,7 @@ class PasswordManager(object):
             token_response = requests.post(
                 '{}/login'.format(self._gsenha_endpoint),
                 headers=self._headers,
-                data=json.dumps({
-                    'username': self._user,
-                    'password': self._password,
-                }),
+                json={'username': self._user, 'password': self._password},
                 verify=self._verify
             )
         except Exception as e:
@@ -79,10 +73,7 @@ class PasswordManager(object):
         response = requests.post(
             '{}/search/password'.format(self._gsenha_endpoint),
             headers=headers,
-            data=json.dumps({
-                'folder': folder,
-                'name': name
-            }),
+            json={'folder': folder, 'name': name},
             verify=self._verify
         )
 
