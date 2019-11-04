@@ -71,4 +71,4 @@ This [Code of Conduct (version 1.4)](https://www.contributor-covenant.org/versio
 
 [homepage]: https://www.contributor-covenant.org
 
-For answers to common questions about this code of conduct, see the [fac](https://www.contributor-covenant.org/faq)
+For answers to common questions about this code of conduct, see the [faq](https://www.contributor-covenant.org/faq)
