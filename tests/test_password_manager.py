@@ -112,12 +112,40 @@ class PasswordManagerTest(TestCase):
                 'login': encrypt_text('b'),
                 'passwd': encrypt_text('c'),
                 'description': encrypt_text('d'),
+                'vault': False
             }
         }
         mock_post.return_value = mock_response
 
         passwords = pm.get_passwords('folder-name', 'password-name')
 
+        self.assertEqual(passwords['password-name']['url'], 'a')
+        self.assertEqual(passwords['password-name']['login'], 'b')
+        self.assertEqual(passwords['password-name']['password'], 'c')
+        self.assertEqual(passwords['password-name']['description'], 'd')
+
+    @patch.object(PasswordManager, '_get_token', new=lambda x: 'my-fake-token')
+    @patch('requests.post')
+    def test_gets_passwords_correctly_vault_true(self, mock_post):
+        pm = PasswordManager(key='tests/fixtures/privkey.pem')
+
+        def b64_encode(text):
+            return base64.b64encode(bytes(text, 'utf-8'))
+
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'status': 'success',
+            'password': {
+                'url': b64_encode('a'),
+                'login': b64_encode('b'),
+                'passwd': b64_encode('c'),
+                'description': b64_encode('d'),
+                'vault': True
+            }
+        }
+        mock_post.return_value = mock_response
+
+        passwords = pm.get_passwords('folder-name', 'password-name')
         self.assertEqual(passwords['password-name']['url'], 'a')
         self.assertEqual(passwords['password-name']['login'], 'b')
         self.assertEqual(passwords['password-name']['password'], 'c')
