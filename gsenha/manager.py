@@ -98,7 +98,7 @@ class PasswordManager(object):
         for name in names:
             password = self._get_password(folder, name)
             if password:
-                if password['vault']:
+                if password.get('vault'):
                     return_passwords[name] = {
                         'url': self._decode_b64(password['url']),
                         'login': self._decode_b64(password['login']),
