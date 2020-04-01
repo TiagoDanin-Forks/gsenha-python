@@ -87,11 +87,10 @@ class PasswordManager(object):
 
     def _decode_b64(self, a_str):
         # If string % 4 -add back '='
-        l_str = a_str.decode()
         l_mod = len(a_str) % 4
         if l_mod:
-            l_str += '=' * (4 - l_mod)
-        return (base64.urlsafe_b64decode(l_str)).decode('utf-8')
+            a_str += '=' * (4 - l_mod)
+        return (base64.urlsafe_b64decode(a_str)).decode('utf-8')
 
     def get_passwords(self, folder, *names):
         return_passwords = dict()

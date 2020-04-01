@@ -130,7 +130,7 @@ class PasswordManagerTest(TestCase):
         pm = PasswordManager(key='tests/fixtures/privkey.pem')
 
         def b64_encode(text):
-            return base64.b64encode(bytes(text, 'utf-8'))
+            return base64.b64encode(bytes(text, 'utf-8')).decode()
 
         mock_response = Mock()
         mock_response.json.return_value = {
