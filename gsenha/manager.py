@@ -85,15 +85,30 @@ class PasswordManager(object):
         raw_cipher_data = base64.b64decode(value)
         return str(self._rsa_verifier.decrypt(raw_cipher_data, padding.PKCS1v15()).decode('utf-8'))
 
+    def _decode_b64(self, a_str):
+        # If string % 4 -add back '='
+        l_mod = len(a_str) % 4
+        if l_mod:
+            a_str += '=' * (4 - l_mod)
+        return (base64.urlsafe_b64decode(a_str)).decode('utf-8')
+
     def get_passwords(self, folder, *names):
         return_passwords = dict()
         for name in names:
             password = self._get_password(folder, name)
             if password:
-                return_passwords[name] = {
-                    'url': self._decrypt(password['url']),
-                    'login': self._decrypt(password['login']),
-                    'password': self._decrypt(password['passwd']),
-                    'description': self._decrypt(password['description']),
-                }
+                if password.get('vault'):
+                    return_passwords[name] = {
+                        'url': self._decode_b64(password['url']),
+                        'login': self._decode_b64(password['login']),
+                        'password': self._decode_b64(password['passwd']),
+                        'description': self._decode_b64(password['description']),
+                    }
+                else:
+                    return_passwords[name] = {
+                        'url': self._decrypt(password['url']),
+                        'login': self._decrypt(password['login']),
+                        'password': self._decrypt(password['passwd']),
+                        'description': self._decrypt(password['description']),
+                    }
         return return_passwords
