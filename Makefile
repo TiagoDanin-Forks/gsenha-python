@@ -3,6 +3,7 @@ PIPENV := $(shell command -v pipenv 2> /dev/null)
 .PHONY: install test clean release
 
 ROOT_PATH=$(shell pwd)
+KEY_FILE=tests/fixtures/privkey.pem
 
 install:
 ifndef PIPENV
@@ -12,7 +13,10 @@ ifndef PIPENV
 endif
 	@pipenv install --dev
 
-test: unit
+keygen: 
+	@if [ ! -f "$KEY_FILE" ]; then openssl genrsa -out ${KEY_FILE} 4096 &>/dev/null; fi
+
+test: keygen unit
 
 qa:
 	@pipenv run flake8
