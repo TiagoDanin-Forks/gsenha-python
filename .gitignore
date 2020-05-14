@@ -46,6 +46,9 @@ coverage.xml
 *.cover
 .hypothesis/
 
+# Unit test files
+privkey.pem
+
 # Translations
 *.mo
 *.pot
